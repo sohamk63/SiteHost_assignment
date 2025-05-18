@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState()
 
   const getDomainData = () => {
-    axios.get("http://127.0.0.1:8000/dns-data")
+    axios.get(`${process.env.SH_BACKEND_URL}/dns-data`)
     .then((response) => {
       setData(response.data);
     })
