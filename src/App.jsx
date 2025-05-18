@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import './App.css'
 import axios from "axios";
-import { Inspector } from 'react-inspector';
 
 function App() {
   const [data, setData] = useState()
