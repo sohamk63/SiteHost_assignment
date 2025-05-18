@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState()
 
   const getDomainData = () => { 
-    axios.get(`${process.env.REACT_APP_SH_BACKEND_URL}/dns-data`)
+    axios.get(`${import.meta.env.VITE_SH_BACKEND_URL}/dns-data`)
     .then((response) => {
       setData(response.data);
     })
