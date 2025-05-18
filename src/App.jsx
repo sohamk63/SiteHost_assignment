@@ -3,58 +3,65 @@ import './App.css'
 import axios from "axios";
 
 function App() {
-  const [data, setData] = useState()
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
 
-  const getDomainData = () => { 
+  const getDomainData = () => {
+    setLoading(true);
     axios.get(`${import.meta.env.VITE_SH_BACKEND_URL}/dns-data`)
-    .then((response) => {
-      setData(response.data);
-    })
-    .catch((error) =>{
-      console.error("Something Went Wrong: ", error);
-    })
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Something Went Wrong: ", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
-  
+
   return (
     <>
-
-      <div style={{
-        marginBottom : '5px'
-      }}>
+      <div style={{ marginBottom: '5px' }}>
         <h2>DNS Data</h2>
-        <div >
 
-        <pre
-          style={{
+        {loading && (
+          <div className="spinner" style={{ margin: '10px 0' }}></div>
+        )}
+
+        {!loading && data && (
+          <pre style={{
             textAlign: 'left',
-            // padding: '20px',
             margin: '20px auto',
             maxWidth: '800px',
             backgroundColor: '#191970',
             borderRadius: '8px',
             overflowX: 'auto',
-            overflowX: 'auto',
-            maxHeight:'400px',
+            maxHeight: '400px',
             fontFamily: 'monospace',
             fontSize: '14px',
             lineHeight: '1.5',
-            whiteSpace: 'pre-wrap',  
-            wordBreak: 'break-word' 
-          }}
-        >
-        {JSON.stringify(data, null, 2)}
-      </pre>
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word'
+          }}>
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        )}
+      </div>
 
-      
-      </div>
-      </div>
       <button 
-      onClick={getDomainData}
+        onClick={getDomainData}
+        disabled={loading}
+        style={{
+          padding: '10px 20px',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          opacity: loading ? 0.6 : 1
+        }}
       >
-        Get Domain Info
-      </button>    
+        {loading ? 'Loading...' : 'Get Domain Info'}
+      </button>
     </>
   )
 }
 
-export default App
+export default App;
